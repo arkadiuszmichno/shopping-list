@@ -1,0 +1,69 @@
+extends layout
+
+block content
+    body
+        .container
+            .row
+                .col-md-2
+                    if lists.length
+                        .list-group
+                            each list in lists
+                                a.list-group-item.list-group-item-action(href="/lists/" + list.list_id + "/products") #{list.name}
+                .col-md-10
+                    .container
+                        .row.md-2
+                            h2 #{listName}
+                        .row.justify-content-center
+                            form(action='/lists/' + listId + '/products', method='POST', class="form-inline")
+                                .col-md-7
+                                    input(type='text', name='name', class="form-control", style="width: 100%;", placeholder='Name')
+                                .col-md-3
+                                    input(type='text', name='amount', class="form-control", style="width: 100%;", placeholder='Amount')
+                                .col-md-2
+                                    input(type='submit', value='Add product', class="btn btn-primary")
+                        .container.mt-4
+                            if unboughtProducts.length
+                                .list-group
+                                    each product in unboughtProducts
+                                        .row.justify-content-center
+                                            .col-md-9
+                                                form(action='/lists/' + product.list_id + "/products/" + product.product_id + '/bought', method='POST')
+                                                    button.list-group-item.list-group-item-action
+                                                        .row
+                                                            .col-sm-8
+                                                                | #{product.name}
+                                                            .col-sm-4
+                                                                p.float-right
+                                                                    | Amount: #{product.amount}
+                                            .col-md-3
+                                                form.form-inline(action='/lists/' + listId + '/products/' + product.product_id + '/delete',  method="POST")
+                                                    .col-md-6
+                                                        button.btn.btn-danger
+                                                            | Delete
+                                                    .col-md-6
+                                                        a.btn.btn-primary(href='/lists/' + listId + '/products/' + product.product_id)
+                                                            | Update
+                            else
+                                p No products on list yet :(
+                        .container.mt-5
+                            if boughtProducts.length
+                                .list-group
+                                    each product in boughtProducts
+                                        .row.justify-content-center
+                                            .col-md-9
+                                                form(action='/lists/' + product.list_id + "/products/" + product.product_id + '/bought', method='POST')
+                                                    button.list-group-item.list-group-item-action.list-group-item-success
+                                                        .row
+                                                            .col-sm-8
+                                                                | #{product.name}
+                                                            .col-sm-4
+                                                                p.float-right
+                                                                    | Amount: #{product.amount}
+                                            .col-md-3
+                                                form.form-inline(action='/lists/' + listId + '/products/' + product.product_id + '/delete',  method="POST")
+                                                    .col-md-6
+                                                        button.btn.btn-danger
+                                                            | Delete
+                                                    .col-md-6
+                                                        a.btn.btn-primary(href='/lists/' + listId + '/products/' + product.product_id)
+                                                            | Update

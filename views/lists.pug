@@ -1,0 +1,26 @@
+extends layout
+
+block content
+    body
+        .container
+            .row.justify-content-center
+                form(action='/lists', method='POST', class="form-inline")
+                    .col-10
+                        input(type='text', name='name', class="form-control", style="width: 100%;", placeholder='Name')
+                    .col-2
+                        input(type='submit', value='Add List', class="btn btn-primary")
+            .container.mt-4
+                if rows.length
+                    .list-group
+                        each list in rows
+                            .row.justify-content-center
+                                .col-12
+                                    a(href="/lists/" + list.list_id + "/products", class="list-group-item list-group-item-action clearfix")
+                                        | #{list.name}
+                                        span.float-right
+                                            form(action='/lists/' + list.list_id + '/delete',  method="POST")
+                                                button.btn.btn-danger
+                                                    | Delete
+
+                else
+                    p No lists yet :(

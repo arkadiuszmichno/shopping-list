@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    body
+        form(action='/lists/' + product.list_id + '/products/' + product.product_id + '/update',  method="POST")
+            .form-group
+                label(for='name') Product Name
+                input#name.form-control(type='text', name='name', value=product.name)
+            .form-group
+                label(for='description') Description
+                input#description.form-control(type='textarea', name='description', value=product.description)
+            .form-group
+                label(for='amount') Amount
+                input#amount.form-control(type='number', name='amount', value=product.amount)
+            button.btn.btn-primary Update Product

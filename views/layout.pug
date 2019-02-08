@@ -1,0 +1,41 @@
+doctype html
+html
+    head
+        title= `Shopping List`
+        link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css')
+        script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
+        script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js")
+        link(rel='stylesheet', href='/css/styles.css')
+    body
+        nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.mb-5
+            .container
+                a(href="/", class="navbar-brand") Shopping List
+                button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar', aria-label="Toggle navigation")
+                    span.navbar-toggler-icon
+                #navbar.collapse.navbar-collapse
+                    ul.nav.navbar-nav
+                        if user
+                            li.nav-item
+                                a(href="/lists", class="nav-link") Lists
+                    ul.nav.navbar-nav.ml-auto
+                        if user
+                            span.navbar-text
+                                | (#{user.name})
+                            li.nav-item
+                                a(href='/users/logout', class='nav-item nav-link') Logout
+                        else
+                            li.nav-item
+                                a(href='/users/login', class='nav-item nav-link') Login
+                            li.nav-item
+                                a(href='/users/register', class='nav-item nav-link') Register
+
+        .container
+            != messages('message', locals)
+            if errors
+                each error, i in errors
+                    div(class="alert alert-danger") #{error.msg}
+            block content
+            br
+            hr
+            footer
+                p Copyright &copy; 2019
