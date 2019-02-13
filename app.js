@@ -59,7 +59,11 @@ app.get('*', function(req, res, next){
 });
 
 app.get('/', (req, res) => {
-    res.render('form');
+    if (req.user) {
+        res.redirect('lists')
+    } else {
+        res.redirect('users/login')
+    }
 });
 
 

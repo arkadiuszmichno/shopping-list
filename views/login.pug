@@ -2,13 +2,18 @@ extends layout
 
 block content
     body
-        h1 Login
-        form(action='/users/login', method='POST')
-            #form-group
-                label Username:
-                input.form-control(name='username', type='text')
-            #form-group
-                label Password:
-                input.form-control(name='password', type='password')
-            br
-            input.btn.btn-primary(type='submit', value='Login')
+        container
+            .row.justify-content-md-center
+                .col-md-6
+                    .card
+                        .card-body
+                            h1.card-title Login
+                            form(action='/users/login', method='POST')
+                                #form-group
+                                    label Username:
+                                    input.form-control(name='username', type='text')
+                                #form-group
+                                    label Password:
+                                    input.form-control(name='password', type='password')
+                                br
+                                input.btn.btn-primary(type='submit', value='Login')

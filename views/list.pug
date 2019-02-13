@@ -31,7 +31,9 @@ block content
                                                     button.list-group-item.list-group-item-action
                                                         .row
                                                             .col-sm-8
-                                                                | #{product.name}
+                                                                font(size='4') #{product.name}
+                                                                br
+                                                                font(size='1') #{product.description}
                                                             .col-sm-4
                                                                 p.float-right
                                                                     | Amount: #{product.amount}
@@ -55,7 +57,9 @@ block content
                                                     button.list-group-item.list-group-item-action.list-group-item-success
                                                         .row
                                                             .col-sm-8
-                                                                | #{product.name}
+                                                                font(size='4') #{product.name}
+                                                                br
+                                                                font(size='1') #{product.description}
                                                             .col-sm-4
                                                                 p.float-right
                                                                     | Amount: #{product.amount}
