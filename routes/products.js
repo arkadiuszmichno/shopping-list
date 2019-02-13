@@ -12,6 +12,7 @@ router.post('/',
             .isLength({min: 1})
             .withMessage('Please enter a name'),
     ],
+    ensureAuthenticated,
     (req, res) => {
         const errors = validationResult(req);
 
@@ -31,7 +32,7 @@ router.post('/',
             });
         }
     });
-router.get('/', (req, res) => {
+router.get('/', ensureAuthenticated, (req, res) => {
     let listId = req.params.listId;
     let unboughtProducts = [];
     let boughtProducts = [];
@@ -66,7 +67,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:productId', (req, res) => {
+router.get('/:productId', ensureAuthenticated, (req, res) => {
     let productId = req.params.productId;
     products.getProduct(productId, function (err, product) {
         if (err) {
@@ -77,7 +78,7 @@ router.get('/:productId', (req, res) => {
     })
 });
 
-router.post('/:productId/delete', (req, res) => {
+router.post('/:productId/delete', ensureAuthenticated, (req, res) => {
     let productId = req.params.productId;
     products.deleteProduct(productId, function (err) {
         if (err) {
@@ -90,7 +91,7 @@ router.post('/:productId/delete', (req, res) => {
     })
 });
 
-router.post('/:productId/update', (req, res) => {
+router.post('/:productId/update', ensureAuthenticated, (req, res) => {
     let productId = req.params.productId;
     products.updateProduct(productId, req.body.name, req.body.description, req.body.amount, function (err) {
         if (err) {
@@ -102,7 +103,7 @@ router.post('/:productId/update', (req, res) => {
         }
     })
 });
-router.post('/:productId/bought', (req, res) => {
+router.post('/:productId/bought', ensureAuthenticated, (req, res) => {
     let productId = req.params.productId;
     products.updateBought(productId, function (err) {
         if (err) {
@@ -114,5 +115,14 @@ router.post('/:productId/bought', (req, res) => {
         }
     })
 });
+
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        req.flash('danger', 'Please login');
+        res.redirect('/users/login');
+    }
+}
 
 module.exports = router;

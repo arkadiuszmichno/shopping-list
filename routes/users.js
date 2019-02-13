@@ -40,6 +40,8 @@ router.post('/register', (req, res) => {
                 user.create(name, email, username, hashPassword, function (err) {
                     if (err) {
                         console.log(err);
+                        req.flash('error', 'User already exists');
+                        res.redirect('/users/register')
                     } else {
                         req.flash('success', 'You are now registered and can log in');
                         res.redirect('/users/login');
@@ -55,8 +57,6 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', (req, res, next) => {
-    console.log('Req: ' + req);
-    console.log('Req body: ' + req.body);
     passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/users/login',
