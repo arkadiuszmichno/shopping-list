@@ -1,20 +1,21 @@
 const express = require('express');
 
-const {body, validationResult} = require('express-validator/check');
 const lists = require('../models/list');
 const router = express.Router();
 
 router.post('/',
-    [
-        body('name')
-            .isLength({min: 1})
-            .withMessage('Please enter a name'),
-    ],
     ensureAuthenticated,
     (req, res) => {
-        const errors = validationResult(req);
+        req.checkBody('name', 'Nazwa jest wymagana').notEmpty();
 
-        if (errors.isEmpty()) {
+        let errors = req.validationErrors();
+
+        if (errors) {
+            errors.forEach(error => {
+                req.flash('error', error.msg);
+            });
+            res.redirect('/lists/')
+        } else {
             lists.create(req.body.name, req.user.user_id, function (err) {
                 if (err) {
                     console.log("Error while sending list to db occurred" + err);
@@ -22,11 +23,6 @@ router.post('/',
                     console.log("Successfully saved list to db");
                     res.redirect('/lists')
                 }
-            });
-        } else {
-            res.render('lists', {
-                errors: errors.array(),
-                data: req.body,
             });
         }
     });

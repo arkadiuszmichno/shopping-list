@@ -9,25 +9,25 @@ html
     body
         nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.mb-5
             .container
-                a(href="/", class="navbar-brand") Shopping List
+                a(href="/", class="navbar-brand") Listy zakupów
                 button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar', aria-label="Toggle navigation")
                     span.navbar-toggler-icon
                 #navbar.collapse.navbar-collapse
                     ul.nav.navbar-nav
                         if user
                             li.nav-item
-                                a(href="/lists", class="nav-link") Lists
+                                a(href="/lists", class="nav-link") Listy
                     ul.nav.navbar-nav.ml-auto
                         if user
                             span.navbar-text
                                 | (#{user.name})
                             li.nav-item
-                                a(href='/users/logout', class='nav-item nav-link') Logout
+                                a(href='/users/logout', class='nav-item nav-link') Wyloguj
                         else
                             li.nav-item
-                                a(href='/users/login', class='nav-item nav-link') Login
+                                a(href='/users/login', class='nav-item nav-link') Zaloguj
                             li.nav-item
-                                a(href='/users/register', class='nav-item nav-link') Register
+                                a(href='/users/register', class='nav-item nav-link') Utwórz konto
 
         .container
             != messages('message', locals)

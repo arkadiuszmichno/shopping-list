@@ -6,11 +6,11 @@ block content
             .row.justify-content-center
                 form(action='/lists', method='POST', class="form-inline")
                     .col-10
-                        input(type='text', name='name', class="form-control", style="width: 100%;", placeholder='Name')
+                        input(type='text', name='name', class="form-control", style="width: 100%;", placeholder='Nazwa')
                     .col-2
-                        input(type='submit', value='Add List', class="btn btn-primary")
+                        input(type='submit', value='Dodaj listę', class="btn btn-primary")
             .container.mt-4
-                if rows.length
+                if rows && rows.length
                     .list-group
                         each list in rows
                             .row.justify-content-center
@@ -20,7 +20,7 @@ block content
                                         span.float-right
                                             form(action='/lists/' + list.list_id + '/delete',  method="POST")
                                                 button.btn.btn-danger
-                                                    | Delete
+                                                    | Usuń
 
                 else
-                    p No lists yet :(
+                    p Nie masz jeszcze żadnej listy :(

@@ -17,12 +17,12 @@ router.post('/register', (req, res) => {
     const password = req.body.password;
     const password2 = req.body.password2;
 
-    req.checkBody('name', 'Name is required').notEmpty();
-    req.checkBody('email', 'Email is required').notEmpty();
-    req.checkBody('email', 'Email is not valid').isEmail();
-    req.checkBody('username', 'Username is required').notEmpty();
-    req.checkBody('password', 'Password is required').notEmpty();
-    req.checkBody('password2', 'Passwords do not match').equals(password);
+    req.checkBody('name', 'Imie jest wymagane').notEmpty();
+    req.checkBody('email', 'Email jest wymagany').notEmpty();
+    req.checkBody('email', 'Email jest niepoprawny').isEmail();
+    req.checkBody('username', 'Nazwa użytkownika jest wymagana').notEmpty();
+    req.checkBody('password', 'Hasło jest wymagane').notEmpty();
+    req.checkBody('password2', 'Hasła nie pasują do siebie').equals(password);
 
     let errors = req.validationErrors();
 
@@ -40,10 +40,10 @@ router.post('/register', (req, res) => {
                 user.create(name, email, username, hashPassword, function (err) {
                     if (err) {
                         console.log(err);
-                        req.flash('error', 'User already exists');
+                        req.flash('error', 'Użytkownik już istnieje');
                         res.redirect('/users/register')
                     } else {
-                        req.flash('success', 'You are now registered and can log in');
+                        req.flash('success', 'Możesz się teraz zalogować');
                         res.redirect('/users/login');
                     }
                 })
@@ -64,9 +64,9 @@ router.post('/login', (req, res, next) => {
     })(req, res, next);
 });
 
-router.get('/logout', (req,res) => {
-   req.logout();
-   req.flash('success', 'You are logged out');
-   res.redirect('/users/login');
+router.get('/logout', (req, res) => {
+    req.logout();
+    req.flash('success', 'Jesteś wylogowany');
+    res.redirect('/users/login');
 });
 module.exports = router;

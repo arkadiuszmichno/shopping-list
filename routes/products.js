@@ -1,22 +1,25 @@
 const express = require('express');
 
-const {body, validationResult} = require('express-validator/check');
 const products = require('../models/product');
 const list = require('../models/list');
 const router = express.Router({mergeParams: true});
 
 
 router.post('/',
-    [
-        body('name')
-            .isLength({min: 1})
-            .withMessage('Please enter a name'),
-    ],
     ensureAuthenticated,
     (req, res) => {
-        const errors = validationResult(req);
+        req.checkBody('name', 'Nazwa jest wymagana').notEmpty();
+        req.checkBody('amount', 'Ilość jest wymagana').notEmpty();
+        req.checkBody('amount', 'Ilość powinna być liczbą').isInt();
 
-        if (errors.isEmpty()) {
+        let errors = req.validationErrors();
+
+        if (errors) {
+            errors.forEach(error => {
+                req.flash('error', error.msg);
+            });
+            res.redirect('/lists/' + req.params.listId + '/products')
+        } else {
             products.create(req.body.name, req.body.amount, req.params.listId, function (err) {
                 if (err) {
                     console.log("Error while sending list to db occurred" + err);
@@ -24,11 +27,6 @@ router.post('/',
                     console.log("Successfully saved list to db");
                     res.redirect('/lists/' + req.params.listId + '/products');
                 }
-            });
-        } else {
-            res.render('list', {
-                errors: errors.array(),
-                data: req.body,
             });
         }
     });
@@ -85,7 +83,6 @@ router.post('/:productId/delete', ensureAuthenticated, (req, res) => {
             console.log('Error occurred while deleting product' + err);
             res.send("Something gone wrong.")
         } else {
-            console.log('Product deleted');
             res.redirect('/lists/' + req.params.listId + '/products');
         }
     })
@@ -98,19 +95,17 @@ router.post('/:productId/update', ensureAuthenticated, (req, res) => {
             console.log('Error occurred while updating product' + err);
             res.send("Something gone wrong.")
         } else {
-            console.log('Product updated');
             res.redirect('/lists/' + req.params.listId + '/products');
         }
     })
 });
-router.post('/:productId/bought', ensureAuthenticated, (req, res) => {
+router.get('/:productId/bought', ensureAuthenticated, (req, res) => {
     let productId = req.params.productId;
     products.updateBought(productId, function (err) {
         if (err) {
             console.log('Error occured while updating bought ' + err);
             res.send("Something gone wrong.")
         } else {
-            console.log('Bought updated');
             res.redirect('/lists/' + req.params.listId + '/products');
         }
     })
@@ -120,7 +115,7 @@ function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     } else {
-        req.flash('danger', 'Please login');
+        req.flash('danger', 'Musisz być zalogowany by mieć dostęp do tych zasobów');
         res.redirect('/users/login');
     }
 }

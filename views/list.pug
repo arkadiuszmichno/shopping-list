@@ -5,7 +5,7 @@ block content
         .container
             .row
                 .col-md-2
-                    if lists.length
+                    if lists && lists.length
                         .list-group
                             each list in lists
                                 a.list-group-item.list-group-item-action(href="/lists/" + list.list_id + "/products") #{list.name}
@@ -16,58 +16,59 @@ block content
                         .row.justify-content-center
                             form(action='/lists/' + listId + '/products', method='POST', class="form-inline")
                                 .col-md-7
-                                    input(type='text', name='name', class="form-control", style="width: 100%;", placeholder='Name')
+                                    input(type='text', name='name', class="form-control", style="width: 100%;", placeholder='Nazwa')
                                 .col-md-3
-                                    input(type='text', name='amount', class="form-control", style="width: 100%;", placeholder='Amount')
+                                    input(type='text', name='amount', class="form-control", style="width: 100%;", placeholder='Ilość')
                                 .col-md-2
-                                    input(type='submit', value='Add product', class="btn btn-primary")
+                                    input(type='submit', value='Dodaj produkt', class="btn btn-primary")
                         .container.mt-4
-                            if unboughtProducts.length
+                            if unboughtProducts && unboughtProducts.length
                                 .list-group
                                     each product in unboughtProducts
                                         .row.justify-content-center
-                                            .col-md-9
-                                                form(action='/lists/' + product.list_id + "/products/" + product.product_id + '/bought', method='POST')
-                                                    button.list-group-item.list-group-item-action
-                                                        .row
-                                                            .col-sm-8
-                                                                font(size='4') #{product.name}
-                                                                br
-                                                                font(size='1') #{product.description}
-                                                            .col-sm-4
-                                                                p.float-right
-                                                                    | Amount: #{product.amount}
-                                            .col-md-3
-                                                form.form-inline(action='/lists/' + listId + '/products/' + product.product_id + '/delete',  method="POST")
-                                                    .col-md-6
-                                                        button.btn.btn-danger
-                                                            | Delete
-                                                    .col-md-6
-                                                        a.btn.btn-primary(href='/lists/' + listId + '/products/' + product.product_id)
-                                                            | Update
+                                                a(href="/lists/" + listId + "/products/" + product.product_id + '/bought', class="list-group-item list-group-item-action clearfix")
+                                                    .row
+                                                        .col-sm-6
+                                                            font(size='4') #{product.name}
+                                                            br
+                                                            font(size='1') #{product.description}
+                                                        .col-sm-2
+                                                            p.float-right
+                                                                | Ilość: #{product.amount}
+                                                        .col-sm-2
+                                                            span.float-right
+                                                                form(action='/lists/' + listId + '/products/' + product.product_id + '/delete',  method="POST")
+                                                                    button.btn.btn-danger
+                                                                        | Usuń
+                                                        .col-sm-2
+                                                            span.float-right
+                                                                form(action='/lists/' + listId + '/products/' + product.product_id,  method="GET")
+                                                                    button.btn.btn-primary
+                                                                        | Zmień
                             else
-                                p No products on list yet :(
+                                p Nie ma produktów na tej liście :(
                         .container.mt-5
-                            if boughtProducts.length
+                            if boughtProducts && boughtProducts.length
                                 .list-group
                                     each product in boughtProducts
                                         .row.justify-content-center
-                                            .col-md-9
-                                                form(action='/lists/' + product.list_id + "/products/" + product.product_id + '/bought', method='POST')
-                                                    button.list-group-item.list-group-item-action.list-group-item-success
-                                                        .row
-                                                            .col-sm-8
-                                                                font(size='4') #{product.name}
-                                                                br
-                                                                font(size='1') #{product.description}
-                                                            .col-sm-4
-                                                                p.float-right
-                                                                    | Amount: #{product.amount}
-                                            .col-md-3
-                                                form.form-inline(action='/lists/' + listId + '/products/' + product.product_id + '/delete',  method="POST")
-                                                    .col-md-6
-                                                        button.btn.btn-danger
-                                                            | Delete
-                                                    .col-md-6
-                                                        a.btn.btn-primary(href='/lists/' + listId + '/products/' + product.product_id)
-                                                            | Update
+                                            a(href="/lists/" + listId + "/products/" + product.product_id + '/bought', class="list-group-item list-group-item-action list-group-item-success clearfix")
+                                                .row
+                                                    .col-sm-6
+                                                        font(size='4') #{product.name}
+                                                        br
+                                                        font(size='1') #{product.description}
+                                                    .col-sm-2
+                                                        p.float-right
+                                                            | Ilość: #{product.amount}
+                                                    .col-sm-2
+                                                        span.float-right
+                                                            form(action='/lists/' + listId + '/products/' + product.product_id + '/delete',  method="POST")
+                                                                button.btn.btn-danger
+                                                                    | Usuń
+                                                    .col-sm-2
+                                                        span.float-right
+                                                            form(action='/lists/' + listId + '/products/' + product.product_id,  method="GET")
+                                                                button.btn.btn-primary
+                                                                    | Zmień
+
