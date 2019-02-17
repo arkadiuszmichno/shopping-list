@@ -10,7 +10,6 @@ router.post('/',
     (req, res) => {
         req.checkBody('name', 'Nazwa jest wymagana').notEmpty();
         req.checkBody('amount', 'Ilość jest wymagana').notEmpty();
-        req.checkBody('amount', 'Ilość powinna być liczbą').isInt();
 
         let errors = req.validationErrors();
 
